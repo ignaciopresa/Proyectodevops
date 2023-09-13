@@ -1,0 +1,31 @@
+version: '3'
+services:
+  backend:
+    build:
+      context: /home/clusteroot/Despliegue1
+    volumes:
+      - backend_data:/app/data
+    ports:
+      - "8081:8080"
+  frontend:
+    image: springboot/frontend:latest
+    volumes:
+      - frontend_data:/app/data
+    ports:
+      - "8082:80"
+  git:
+    image: git:latest
+    depends_on:
+      - backend
+      - frontend
+  jenkins:
+    image: jenkins/jenkins:lts
+    volumes:
+      - jenkins_data:/var/jenkins_home
+    ports:
+      - "8083:8080"
+
+volumes:
+  backend_data:
+  frontend_data:
+  jenkins_data:
